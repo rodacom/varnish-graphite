@@ -10,8 +10,10 @@ import logging
 import socket
 #from subprocess import check_output
 from subprocess import Popen, PIPE
+import re
+import sys
 from time import time, sleep
-
+from os import fork, devnull
 
 class GraphiteClient:
 
@@ -132,8 +134,22 @@ def main():
   parser.add_argument('-B', '--max-buffer-size', dest='max_buffer_size',
       default=33554432,
       help='The maximum number of bytes to buffer when reconnecting')
+  parser.add_argument('-d', '--demonize',
+      default=False,
+      metavar='PIDFILE',
+      help='Fork to the background and store pid in PIDFILE')
 
   args = parser.parse_args()
+
+  if args.demonize: # FIXME: Clean this up a bit
+    pid = fork()
+
+    if pid != 0:
+      print("demon pid: {0}".format(pid))
+      open(args.demonize, 'w+').write(str(pid))
+      exit()
+    else:
+      sys.stdout = open(devnull, 'w')
 
   logging.basicConfig(level=logging.INFO)
 
