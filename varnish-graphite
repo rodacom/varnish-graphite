@@ -8,12 +8,11 @@ import argparse
 import json
 import logging
 import socket
-#from subprocess import check_output
 from subprocess import Popen, PIPE
 import re
 import sys
 from time import time, sleep
-from os import fork, devnull
+from os import fork
 
 class GraphiteClient:
 
@@ -138,20 +137,25 @@ def main():
       default=False,
       metavar='PIDFILE',
       help='Fork to the background and store pid in PIDFILE')
+  parser.add_argument('-l', '--logfile',
+      default=False,
+      help='File to write log to, (default stdout)')
 
   args = parser.parse_args()
 
-  if args.demonize: # FIXME: Clean this up a bit
+  if args.demonize:
     pid = fork()
 
     if pid != 0:
       print("demon pid: {0}".format(pid))
       open(args.demonize, 'w+').write(str(pid))
       exit()
-    else:
-      sys.stdout = open(devnull, 'w')
 
-  logging.basicConfig(level=logging.INFO)
+  if args.logfile:
+    print args.logfile
+    logging.basicConfig(level=logging.INFO, filename=args.logfile)
+  else:
+    logging.basicConfig(level=logging.INFO)
 
   try:
     c = GraphiteClient(args.host, args.port, args.prefix, args.buffer_size, args.max_buffer_size)
