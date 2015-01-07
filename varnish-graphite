@@ -74,23 +74,25 @@ def collect_metrics(name):
   status = []
   fmt = lambda x, y: "{} {} {}".format(x, varnish_stats[y]['value'], timestamp)
 
-  metrics = [('cache.hit', 'cache_hit'),
-             ('cache.hitpass', 'cache_hitpass'),
-             ('cache.miss', 'cache_miss'),
-             ('backend.conn', 'backend_conn'),
-             ('backend.unhealthy', 'backend_unhealthy'),
-             ('backend.busy', 'backend_busy'),
-             ('backend.fail', 'backend_fail'),
-             ('backend.reuse', 'backend_reuse'),
-             ('backend.toolate', 'backend_toolate'),
-             ('backend.recycle', 'backend_recycle'),
-             ('backend.retry', 'backend_retry'),
-             ('backend.req', 'backend_req'),
-             ('client.conn', 'client_conn'),
-             ('client.drop', 'client_drop'),
-             ('client.req', 'client_req'),
-             ('client.hdrbytes', 's_hdrbytes'),
-             ('client.bodybytes', 's_bodybytes')]
+  metrics = [('cache.hit', 'MAIN.cache_hit'),
+             ('cache.hitpass', 'MAIN.cache_hitpass'),
+             ('cache.miss', 'MAIN.cache_miss'),
+             ('backend.conn', 'MAIN.backend_conn'),
+             ('backend.unhealthy', 'MAIN.backend_unhealthy'),
+             ('backend.busy', 'MAIN.backend_busy'),
+             ('backend.fail', 'MAIN.backend_fail'),
+             ('backend.reuse', 'MAIN.backend_reuse'),
+             ('backend.toolate', 'MAIN.backend_toolate'),
+             ('backend.recycle', 'MAIN.backend_recycle'),
+             ('backend.retry', 'MAIN.backend_retry'),
+             ('backend.req', 'MAIN.backend_req'),
+             ('client.conn', 'MAIN.sess_conn'),
+             ('client.drop', 'MAIN.sess_drop'),
+             ('client.req', 'MAIN.client_req'),
+             ('client.req_hdrbytes', 'MAIN.s_req_hdrbytes'),
+             ('client.req_bodybytes', 'MAIN.s_req_bodybytes'),
+             ('client.resp_hdrbytes', 'MAIN.s_resp_hdrbytes'),
+             ('client.resp_bodybytes', 'MAIN.s_resp_bodybytes')]
 
   for (name, metric) in metrics:
     status.append(fmt(name, metric))
@@ -147,4 +149,3 @@ def main():
 
 if __name__ == "__main__":
   main()
-
