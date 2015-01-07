@@ -9,6 +9,7 @@ import json
 import logging
 import socket
 from subprocess import check_output
+from subprocess import Popen, PIPE
 from time import time, sleep
 
 
@@ -68,7 +69,9 @@ class GraphiteClient:
     self.connect()
 
 def collect_metrics(name):
-  varnish_stats = json.loads(check_output(['varnishstat', '-n', name, '-1', '-j']))
+  #varnish_stats = json.loads(check_output(['varnishstat', '-n', name, '-1', '-j']))
+  # Python 2.6 workaround for RHEL6
+  varnish_stats = json.loads(Popen(['varnishstat', '-n', name, '-1', '-j'], stdout=PIPE).communicate()[0])
   timestamp = int(time())
 
   status = []
