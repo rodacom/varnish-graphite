@@ -41,28 +41,28 @@ class GraphiteClient:
         self.sock = None
         logging.warning("Connection failed. Re-trying on the next interval")
     if self.sock != None:
-      logging.info("Connected to {}:{}".format(self.host, self.port))
+      logging.info("Connected to {0}:{1}".format(self.host, self.port))
 
   def send_metrics(self, metrics):
     if self.sock == None:
       self.connect()
     for stat in metrics:
-      if self.sock != None and len(self.sendbuf) + len("{}.{}".format(self.prefix, stat)) > self.buffer_size:
-        logging.info("Sending {} bytes to {}".format(len(self.sendbuf), "{}:{}".format(self.host, self.port)))
+      if self.sock != None and len(self.sendbuf) + len("{0}.{1}".format(self.prefix, stat)) > self.buffer_size:
+        logging.info("Sending {0} bytes to {1}".format(len(self.sendbuf), "{0}:{1}".format(self.host, self.port)))
         try:
           self.sock.send(self.sendbuf)
           self.sendbuf = ''
         except socket.error:
-          logging.warning("Lost connection to {}:{}".format(self.host, self.port))
+          logging.warning("Lost connection to {0}:{1}".format(self.host, self.port))
           self.reconnect()
-      if len(self.sendbuf) + len("{}.{}".format(self.prefix, stat)) < int(self.max_buffer_size):
-        self.sendbuf += "{}.{}\n".format(self.prefix, stat)
+      if len(self.sendbuf) + len("{0}.{1}".format(self.prefix, stat)) < int(self.max_buffer_size):
+        self.sendbuf += "{0}.{1}\n".format(self.prefix, stat)
 
   def disconnect(self):
     if self.sock != None:
       self.sock.close()
     self.sock = None
-    logging.warning("Disconnected from {}:{}".format(self.host, self.port))
+    logging.warning("Disconnected from {0}:{1}".format(self.host, self.port))
 
   def reconnect(self):
     self.disconnect()
@@ -75,7 +75,7 @@ def collect_metrics(name):
   timestamp = int(time())
 
   status = []
-  fmt = lambda x, y: "{} {} {}".format(x, varnish_stats[y]['value'], timestamp)
+  fmt = lambda x, y: "{0} {1} {2}".format(x, varnish_stats[y]['value'], timestamp)
 
   metrics = [('cache.hit', 'MAIN.cache_hit'),
              ('cache.hitpass', 'MAIN.cache_hitpass'),
