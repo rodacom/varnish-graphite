@@ -70,32 +70,14 @@ class GraphiteClient:
 def collect_metrics(name):
   varnish_stats = json.loads(check_output(['varnishstat', '-n', name, '-1', '-j']))
   timestamp = int(time())
+  metrics = []
 
-  status = []
-  fmt = lambda x, y: "{} {} {}".format(x, varnish_stats[y]['value'], timestamp)
+  for key in varnish_stats:
+    value = varnish_stats[key]
+    if type(value) is dict:
+      metrics.append("{} {} {}".format(key.replace("_","."), value['value'], timestamp))
 
-  metrics = [('cache.hit', 'cache_hit'),
-             ('cache.hitpass', 'cache_hitpass'),
-             ('cache.miss', 'cache_miss'),
-             ('backend.conn', 'backend_conn'),
-             ('backend.unhealthy', 'backend_unhealthy'),
-             ('backend.busy', 'backend_busy'),
-             ('backend.fail', 'backend_fail'),
-             ('backend.reuse', 'backend_reuse'),
-             ('backend.toolate', 'backend_toolate'),
-             ('backend.recycle', 'backend_recycle'),
-             ('backend.retry', 'backend_retry'),
-             ('backend.req', 'backend_req'),
-             ('client.conn', 'client_conn'),
-             ('client.drop', 'client_drop'),
-             ('client.req', 'client_req'),
-             ('client.hdrbytes', 's_hdrbytes'),
-             ('client.bodybytes', 's_bodybytes')]
-
-  for (name, metric) in metrics:
-    status.append(fmt(name, metric))
-
-  return status
+  return metrics
 
 
 def main():
