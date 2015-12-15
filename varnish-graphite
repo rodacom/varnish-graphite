@@ -109,10 +109,16 @@ def main():
   parser.add_argument('-B', '--max-buffer-size', dest='max_buffer_size',
       default=33554432,
       help='The maximum number of bytes to buffer when reconnecting')
+  parser.add_argument('-q', '--quiet', action='store_true',
+      dest='quiet',
+      default=False,
+      help='Turn off logging')
+
 
   args = parser.parse_args()
 
-  logging.basicConfig(level=logging.INFO)
+  if args.quiet == False:
+    logging.basicConfig(level=logging.INFO)
 
   try:
     c = GraphiteClient(args.host, args.port, args.prefix, args.buffer_size, args.max_buffer_size)
