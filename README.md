@@ -11,7 +11,7 @@ It allows now to send all the statistics provided by the 'varnishstat' command i
 ```
 usage: varnish-graphite [-h] [-H HOST] [-n NAME] [-p PORT] [-P PREFIX] [-i INTERVAL]
                         [-b BUFFER_SIZE] [-B MAX_BUFFER_SIZE] [-d PIDFILE]
-                        [-l LOGFILE]
+                        [-l LOGFILE] [-q]
 
 Collect and stream Varnish statistics to Graphite.
 
@@ -37,4 +37,6 @@ optional arguments:
   -l LOGFILE, --logfile LOGFILE
                         File to write log to, (default stdout) (default:
                         False)
+  -q, --quiet
+                        Turn off logging
 ```
