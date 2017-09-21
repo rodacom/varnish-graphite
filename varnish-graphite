@@ -116,7 +116,7 @@ def main():
       dest='quiet',
       default=False,
       help='Turn off logging')
-  parser.add_argument('-d', '--demonize',
+  parser.add_argument('-d', '--daemonize',
       default=False,
       metavar='PIDFILE',
       help='Fork to the background and store pid in PIDFILE')
@@ -126,12 +126,12 @@ def main():
 
   args = parser.parse_args()
 
-  if args.demonize:
+  if args.daemonize:
     pid = fork()
 
     if pid != 0:
-      print("demon pid: {0}".format(pid))
-      open(args.demonize, 'w+').write(str(pid))
+      print("daemon pid: {0}".format(pid))
+      open(args.daemonize, 'w+').write(str(pid))
       exit()
 
   if args.quiet == False:

@@ -31,7 +31,7 @@ optional arguments:
   -B MAX_BUFFER_SIZE, --max-buffer-size MAX_BUFFER_SIZE
                         The maximum number of bytes to buffer when
                         reconnecting (default: 33554432)
-  -d PIDFILE, --demonize PIDFILE
+  -d PIDFILE, --daemonize PIDFILE
                         Fork to the background and store pid in PIDFILE
                         (default: False)
   -l LOGFILE, --logfile LOGFILE
