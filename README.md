@@ -2,9 +2,9 @@
 
 Small Python script for sending Varnish statistics to Graphite.
 
-This fork makes the script compatible with Varnish 4.
-
-It allows now to send all the statistics provided by the 'varnishstat' command instead of a predefined list of metrics.
+* Compatible with Varnish 4 and 5
+* Sends statistics provided by 'varnishstat' command
+* Has a quiet and a logging to file options
 
 ## Usage
 
